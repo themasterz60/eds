@@ -1,0 +1,96 @@
+$mail->CharSet = "UTF-8";
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP(); 
+            $mail->Host       = $host;
+            $mail->SMTPAuth   = true;
+            $mail->Username   = $data[0];
+            $mail->Password   = $data[1];  
+			if(!empty($ssec)){
+				$mail->SMTPSecure = $ssec;
+				}
+            $mail->Port       = $port;
+            $mail->XMailer = 'Viper3';
+			if(!empty($op)){
+				$mail->SetLanguage("de", "phpmailer/language");
+				$mail->Encoding="base64";
+				}	
+			
+			
+            if(!empty($pr)){
+                $mail->Priority = $pr;
+               }
+            
+            
+             
+       
+
+          
+            if(!empty($_FILES['file']['name'])){
+                $file_tmp  = $_FILES['file']['tmp_name'];
+                $file_name = $_FILES['file']['name'];
+                //...
+                $mail->AddAttachment($file_tmp, $file_name);
+               }
+            
+
+                $r=rand(0, 10000000);
+                $r.=$coo;
+                
+                $mail->isHTML(true);                   
+			
+				
+				if(strpos($subj, $word) !== false){
+                    $rme=rand(0, 10000000);
+                    $rme.=$coo;
+                    $subj=str_replace("(randme)", $rme, $subj);
+                    $mail->Subject = $subj;
+                } else{
+                    $mail->Subject = $subj;    
+                }
+               if(strpos($msg, $word) !== false){
+                    $rme=rand(0, 10000000);
+                    $rme.=$coo;
+                    $msg=str_replace("(randme)", $rme, $msg);
+					$rr=rtrim(base64_encode($r),"=");
+					
+                    $mail->Body    = $msg.'</br></br></br></br></br></br>'.$rr;
+                    
+                } else{
+					$rr=rtrim(base64_encode($r),"=");
+                    $mail->Body    = $msg.'</br></br></br></br></br></br>'.$rr;
+                    
+					
+					
+					///////
+                }
+                
+                
+				if(strpos($se, $word) !== false){
+                    $rme=rand(0, 10000000);
+                    $rme.=$coo;
+                    $se=str_replace("(randme)", $rme, $se);
+                    $mail->setFrom($se, $sn);
+                    
+                } else{
+                   $mail->setFrom($se, $sn);
+                    
+                }
+		
+            if(!empty($_POST['to'])){
+                $to=$_POST['to'];
+                if(strpos($to, $word) !== false){
+                    $rme=rand(0, 10000000);
+                    $rme.=$coo;
+                    $to=str_replace("(randme)", $rme, $to);
+                    $mail->addAddress($to);
+                    
+                } else{
+                    $mail->addAddress($to);
+                    }
+            }
+        
+                foreach($array as $recipient) {
+                $mail->addBCC($recipient);
+                    
+                    echo 'Message has been sent to : '.$recipient."</br>";
+					flush();
